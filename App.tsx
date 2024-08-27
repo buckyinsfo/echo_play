@@ -27,6 +27,7 @@ const BackgroundComponent = () => (
   </ImageBackground>
 );
 
+// cspell:disable
 const ScrollableComponent = () => (
   <ScrollView>
     <Image source={logoImg} style={styles.image} />
@@ -47,6 +48,7 @@ const ScrollableComponent = () => (
     <Image source={logoImg} style={styles.image} />
   </ScrollView>
 );
+// cspell:enable
 
 const App = () => {
   const [currentComponent, setCurrentComponent] = useState(0);
