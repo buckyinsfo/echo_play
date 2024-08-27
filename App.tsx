@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Button,
   View,
   Text,
   Image,
@@ -50,11 +51,21 @@ const ScrollableComponent = () => (
 );
 // cspell:enable
 
+const ButtonExample = () => (
+  <Button
+    title="Touch Me!"
+    onPress={() => {
+      console.log("Button has been pressed.");
+    }}
+    color="midnightblue"
+  />
+);
+
 const App = () => {
   const [currentComponent, setCurrentComponent] = useState(0);
 
   const toggleComponent = () => {
-    setCurrentComponent((prev) => (prev + 1) % 3);
+    setCurrentComponent((prev) => (prev + 1) % 4);
   };
 
   const renderComponent = () => {
@@ -65,13 +76,15 @@ const App = () => {
         return <BackgroundComponent />;
       case 2:
         return <ScrollableComponent />;
+      case 3:
+        return <ButtonExample />;
       default:
         return <ImageComponent />;
     }
   };
 
   const getNextComponentName = () => {
-    const names = ["Background", "Scrollable", "Images"];
+    const names = ["Background", "Scrollable", "Images", "Button"];
     return names[currentComponent];
   };
 
