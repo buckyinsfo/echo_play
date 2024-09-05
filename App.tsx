@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Button,
   View,
@@ -6,18 +6,20 @@ import {
   Image,
   ImageBackground,
   ImageSourcePropType,
+  Pressable,
   TouchableOpacity,
+  StatusBar,
   StyleSheet,
   ScrollView,
-} from "react-native";
-import logoImg from "./assets/adaptive-icon.png";
+} from 'react-native';
+import logoImg from './assets/adaptive-icon.png';
 
 const ImageComponent = () => (
   <View>
     <Image source={logoImg} style={styles.image} />
     <Image
       style={styles.image}
-      source={{ uri: "https://picsum.photos/300" } as ImageSourcePropType}
+      source={{ uri: 'https://picsum.photos/300' } as ImageSourcePropType}
     />
   </View>
 );
@@ -32,20 +34,23 @@ const BackgroundComponent = () => (
 const ScrollableComponent = () => (
   <ScrollView>
     <Image source={logoImg} style={styles.image} />
-    <Text>
-      Lorem ipsum odor amet, consectetuer adipiscing elit. Leo leo himenaeos
-      facilisi cras lorem; fermentum nascetur quisque. Orci dolor nulla egestas
-      auctor cras erat. Aliquam nec sollicitudin lobortis; scelerisque himenaeos
-      hac. Tempor semper gravida consequat molestie inceptos mauris turpis.
-      Euismod et etiam sed rutrum risus; suspendisse turpis eleifend. Efficitur
-      vulputate torquent eget, ut vulputate congue. Phasellus viverra aptent;
-      nulla curabitur nam sit nam mattis. Id penatibus tincidunt eget elementum
-      mollis class pulvinar pharetra. Habitasse sit dis nostra magnis vitae
-      malesuada. Ultrices iaculis cras auctor malesuada mi mus aptent. Sodales
-      libero auctor tincidunt tincidunt hac semper dis. Vel vestibulum mauris
-      tristique ante vitae mattis etiam dolor. Curae viverra potenti facilisis
-      habitant dictum est turpis mollis a.
-    </Text>
+    <Pressable onPress={() => console.log('Text Presed')}>
+      <Text>
+        Lorem ipsum odor amet, consectetuer adipiscing elit. Leo leo himenaeos
+        facilisi cras lorem; fermentum nascetur quisque. Orci dolor nulla
+        egestas auctor cras erat . Aliquam nec sollicitudin lobortis;
+        scelerisque himenaeos hac. Tempor semper gravida consequat molestie
+        inceptos mauris turpis. Euismod et etiam sed rutrum risus; suspendisse
+        turpis eleifend. Efficitur vulputate torquent eget, ut vulputate congue.
+        Phasellus viverra aptent; nulla curabitur nam sit nam mattis. Id
+        penatibus tincidunt eget elementum mollis class pulvinar pharetra.
+        Habitasse sit dis nostra magnis vitae malesuada. Ultrices iaculis cras
+        auctor malesuada mi mus aptent. Sodales libero auctor tincidunt
+        tincidunt hac semper dis. Vel vestibulum mauris tristique ante vitae
+        mattis etiam dolor. Curae viverra potenti facilisis habitant dictum est
+        turpis mollis a.
+      </Text>
+    </Pressable>
     <Image source={logoImg} style={styles.image} />
   </ScrollView>
 );
@@ -55,17 +60,21 @@ const ButtonExample = () => (
   <Button
     title="Touch Me!"
     onPress={() => {
-      console.log("Button has been pressed.");
+      console.log('Button has been pressed.');
     }}
     color="midnightblue"
   />
+);
+
+const StatusBarExample = () => (
+  <StatusBar backgroundColor={'lightgreen'} barStyle={'default'} />
 );
 
 const App = () => {
   const [currentComponent, setCurrentComponent] = useState(0);
 
   const toggleComponent = () => {
-    setCurrentComponent((prev) => (prev + 1) % 4);
+    setCurrentComponent(prev => (prev + 1) % 5);
   };
 
   const renderComponent = () => {
@@ -78,14 +87,17 @@ const App = () => {
         return <ScrollableComponent />;
       case 3:
         return <ButtonExample />;
+      case 4:
+        return <StatusBarExample />;
       default:
         return <ImageComponent />;
     }
   };
 
   const getNextComponentName = () => {
-    const names = ["Background", "Scrollable", "Images", "Button"];
-    return names[currentComponent];
+    const names = ['Images', 'Background', 'Scrollable', 'Button', 'StatusBar'];
+    const nextIndex = (currentComponent + 1) % names.length;
+    return names[nextIndex];
   };
 
   return (
@@ -103,7 +115,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "blue",
+    backgroundColor: 'blue',
     flex: 1,
     padding: 60,
   },
@@ -114,26 +126,26 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageText: {
-    color: "white",
+    color: 'white',
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   button: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 5,
     marginVertical: 10,
   },
   buttonText: {
-    color: "blue",
-    textAlign: "center",
+    color: 'blue',
+    textAlign: 'center',
   },
   text: {
-    color: "white",
+    color: 'white',
     marginTop: 10,
   },
 });
