@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   Button,
   View,
   Text,
@@ -70,11 +71,20 @@ const StatusBarExample = () => (
   <StatusBar backgroundColor={'lightgreen'} barStyle={'default'} />
 );
 
+const ActivityIndicatorExample = () => (
+  <View style={[styles.container, styles.horizontal]}>
+    <ActivityIndicator />
+    <ActivityIndicator size="large" />
+    <ActivityIndicator size="small" color="#0000ff" />
+    <ActivityIndicator size="large" color="#00ff00" />
+  </View>
+);
+
 const App = () => {
   const [currentComponent, setCurrentComponent] = useState(0);
 
   const toggleComponent = () => {
-    setCurrentComponent(prev => (prev + 1) % 5);
+    setCurrentComponent(prev => (prev + 1) % 6);
   };
 
   const renderComponent = () => {
@@ -89,13 +99,22 @@ const App = () => {
         return <ButtonExample />;
       case 4:
         return <StatusBarExample />;
+      case 5:
+        return <ActivityIndicatorExample />;
       default:
         return <ImageComponent />;
     }
   };
 
   const getNextComponentName = () => {
-    const names = ['Images', 'Background', 'Scrollable', 'Button', 'StatusBar'];
+    const names = [
+      'Images',
+      'Background',
+      'Scrollable',
+      'Button',
+      'StatusBar',
+      'ActivityIndicator',
+    ];
     const nextIndex = (currentComponent + 1) % names.length;
     return names[nextIndex];
   };
