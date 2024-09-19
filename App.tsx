@@ -1,10 +1,10 @@
 import { View, StyleSheet, Text } from 'react-native';
-import NativeComp from './components/NativeComps';
- 
+import ThreeScene from './components/ThreeScene';
+
 const App = () => {
   return (
     <View style={styles.container}>
-      <NativeComp />
+      <ThreeScene />
       <Text style={styles.text}>Open your app Bucky! right?</Text>
     </View>
   );
