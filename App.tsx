@@ -1,35 +1,45 @@
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import ThreeScene from './components/ThreeScene';
+import FiberScene from './components/FiberScene';
 
 const App = () => {
+  const [useThreeScene, setUseThreeScene] = useState(true);
+
+  useEffect(() => {
+    console.log(
+      `Current scene: ${useThreeScene ? 'ThreeScene' : 'FiberScene'}`,
+    );
+  }, [useThreeScene]);
+
+  const toggleScene = () => {
+    setUseThreeScene(prev => !prev);
+  };
+
   return (
     <View style={styles.container}>
-      <ThreeScene />
-      <Text style={styles.text}>Open your app Bucky! right?</Text>
+      {useThreeScene ? <ThreeScene /> : <FiberScene />}
+      <View style={styles.overlay}>
+        <TouchableOpacity style={styles.button} onPress={toggleScene}>
+          <Text style={styles.buttonText}>
+            Switch to {useThreeScene ? 'Fiber' : 'Three'} Scene
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'blue',
     flex: 1,
-    padding: 60,
   },
-  image: {
-    width: 300,
-    height: 300,
-    marginBottom: 10,
-  },
-  backgroundImage: {
-    flex: 1,
-    justifyContent: 'center',
+  overlay: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    right: 0,
     alignItems: 'center',
-  },
-  imageText: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
   button: {
     backgroundColor: 'white',
@@ -42,7 +52,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   text: {
-    color: 'white',
+    color: 'black',
     marginTop: 10,
   },
 });
