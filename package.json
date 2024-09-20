@@ -17,14 +17,14 @@
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.74.5",
-    "react-native-web": "^0.19.12",
-    "three": "^0.168.0"
+    "react-native-web": "^0.19.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@react-native-community/eslint-config": "^3.2.0",
     "@types/react": "~18.2.45",
     "@types/react-native": "^0.73.0",
+    "@types/three": "^0.168.0",
     "eslint": "^8.57.0",
     "typescript": "~5.3.3"
   },

@@ -11,6 +11,7 @@ const ThreeScene: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  // Create the context
   const onContextCreate = async (gl: ExpoWebGLRenderingContext) => {
     const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
 
@@ -27,9 +28,6 @@ const ThreeScene: React.FC = () => {
 
     // Create a cube
     const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
 
     // Load a texture
     const texture = await new TextureLoader().loadAsync(
@@ -39,7 +37,6 @@ const ThreeScene: React.FC = () => {
     // Create a textured cube
     const texturedMaterial = new THREE.MeshBasicMaterial({ map: texture });
     const texturedCube = new THREE.Mesh(geometry, texturedMaterial);
-    texturedCube.position.x = 2;
     scene.add(texturedCube);
 
     // Animation loop
@@ -48,9 +45,6 @@ const ThreeScene: React.FC = () => {
 
       texturedCube.rotation.x += 0.01;
       texturedCube.rotation.y += 0.01;
-
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
 
       renderer.render(scene, camera);
       gl.endFrameEXP();
