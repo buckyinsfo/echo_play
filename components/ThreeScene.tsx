@@ -27,11 +27,18 @@ const ThreeScene: React.FC = () => {
     scene.background = new THREE.Color('lightblue'); // Set a background color
 
     // Create a camera
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.z = 5;
+    const fov = 75;
+    const aspect = width / height;
+    const near = 0.1;
+    const far = 5;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 2;
 
     // Create a cube
-    const geometry = new THREE.BoxGeometry();
+    const boxWidth = 1;
+    const boxHeight = 1;
+    const boxDepth = 1;
+    const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
     try {
       // Load a texture
@@ -41,6 +48,10 @@ const ThreeScene: React.FC = () => {
       console.log('Texture loaded successfully');
 
       // Create a textured cube
+      // A Mesh in three.js represents the combination of three things
+      // 1) A Geometry (the shape of the object)
+      // 2) A Material (how to draw the object, shiny or flat, what color, what texture(s) to apply. Etc.)
+      // 3) The position, orientation, and scale of that object in the scene relative to its parent.
       const texturedMaterial = new THREE.MeshBasicMaterial({ map: texture });
       const texturedCube = new THREE.Mesh(geometry, texturedMaterial);
       scene.add(texturedCube);
@@ -48,7 +59,7 @@ const ThreeScene: React.FC = () => {
       // Animation loop
       const render = () => {
         timeout = setTimeout(render, 1000 / 60);
-        texturedCube.rotation.x += 0.01;
+        texturedCube.rotation.x += 0.001;
         texturedCube.rotation.y += 0.01;
         renderer.render(scene, camera);
         gl.endFrameEXP();
@@ -56,6 +67,7 @@ const ThreeScene: React.FC = () => {
       render();
     } catch (error) {
       console.error('Error in ThreeScene:', error);
+
       // Fallback to a simple colored cube if texture loading fails
       const material = new THREE.MeshBasicMaterial({ color: 'red' });
       const cube = new THREE.Mesh(geometry, material);
