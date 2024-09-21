@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import ThreeScene from './components/ThreeScene';
+//import ThreeScene from './components/ThreeScene';
+import ThreeScene from './components/ThreeScene2';
 import FiberScene from './components/FiberScene';
 
 const App = () => {
