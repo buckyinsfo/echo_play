@@ -1,18 +1,21 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
 import { Renderer, THREE } from 'expo-three';
 import { PanResponder, PanResponderGestureState } from 'react-native';
 
+type SceneRef = {
+  scene: THREE.Scene;
+  camera: THREE.PerspectiveCamera;
+  renderer: Renderer;
+  mesh: THREE.Mesh<THREE.BufferGeometry, THREE.Material>;
+  wireframe: THREE.LineSegments<THREE.BufferGeometry, THREE.Material>;
+};
+
 const ThreeScene2: React.FC = () => {
   let timeout: NodeJS.Timeout;
+  const sceneRef = useRef<SceneRef | null>(null);
 
-  const sceneRef = useRef<{
-    scene: THREE.Scene;
-    camera: THREE.PerspectiveCamera;
-    renderer: Renderer;
-    mesh: THREE.Mesh;
-    wireframe: THREE.LineSegments;
-  } | null>(null);
+  const rotationSpeedRef = useRef({ x: 0.001, y: 0.01 });
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -24,6 +27,10 @@ const ThreeScene2: React.FC = () => {
         wireframe.rotation.y += gestureState.dx * 0.01;
         wireframe.rotation.x += gestureState.dy * 0.01;
       }
+    },
+    onPanResponderRelease: () => {
+      // Reset rotation speed when touch ends
+      rotationSpeedRef.current = { x: 0.001, y: 0.01 };
     },
   });
 
@@ -59,8 +66,8 @@ const ThreeScene2: React.FC = () => {
     const wireframe = new THREE.LineSegments(
       new THREE.WireframeGeometry(geometry),
       new THREE.LineBasicMaterial({
-        color: 0x000000,
-        opacity: 0.25,
+        color: 0xffffff,
+        opacity: 0.75,
         transparent: true,
       }),
     );
@@ -72,34 +79,56 @@ const ThreeScene2: React.FC = () => {
 
     sceneRef.current = { scene, camera, renderer, mesh, wireframe };
 
+    // Animation loop
     try {
-      // Animation loop
       const render = () => {
         if (sceneRef.current) {
-          const { scene, camera, renderer } = sceneRef.current;
+          const { scene, camera, renderer, mesh, wireframe } = sceneRef.current;
 
-          // timeout = setTimeout(render, 1000 / 60);
-
-          // // Move the mesh in and out along the z-axis
-          // //mesh.position.z = Math.sin(time) * 0.5; // Adjust the multiplier (0.5) to change the range of motion
-
-          // mesh.rotateX(0.001);
-          // mesh.rotateY(0.01);
-
-          // wireframe.rotateX(0.001);
-          // wireframe.rotateY(0.01);
+          // Apply continuous rotation
+          mesh.rotation.x += rotationSpeedRef.current.x;
+          mesh.rotation.y += rotationSpeedRef.current.y;
+          wireframe.rotation.x += rotationSpeedRef.current.x;
+          wireframe.rotation.y += rotationSpeedRef.current.y;
 
           renderer.render(scene, camera);
         }
         gl.endFrameEXP();
         requestAnimationFrame(render);
       };
-
       render();
     } catch (error) {
       console.error('Error in ThreeScene2:', error);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      // Clean up Three.js resources when component unmounts
+      if (sceneRef.current) {
+        const { scene, mesh, wireframe } = sceneRef.current;
+        scene.remove(mesh);
+        scene.remove(wireframe);
+        if (mesh.geometry) mesh.geometry.dispose();
+        if (mesh.material) {
+          if (Array.isArray(mesh.material)) {
+            mesh.material.forEach(material => material.dispose());
+          } else {
+            mesh.material.dispose();
+          }
+        }
+        if (wireframe.geometry) wireframe.geometry.dispose();
+        if (wireframe.material) {
+          if (Array.isArray(wireframe.material)) {
+            wireframe.material.forEach(material => material.dispose());
+          } else {
+            wireframe.material.dispose();
+          }
+        }
+      }
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <GLView
