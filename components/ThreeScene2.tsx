@@ -28,20 +28,38 @@ const ThreeScene2: React.FC = () => {
 
     // Create a three.js primitive
     const geometry = new THREE.IcosahedronGeometry(0.5, 2);
-    const material = new THREE.MeshBasicMaterial({ color: 0xccff });
+    const material = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      flatShading: true,
+    });
     const mesh = new THREE.Mesh(geometry, material);
-
     scene.add(mesh);
 
+    // Create a wire mesh
+    const wireframe = new THREE.WireframeGeometry(geometry);
+    const line = new THREE.LineSegments(wireframe);
+    line.material.depthTest = false;
+    line.material.opacity = 0.25;
+    line.material.transparent = true;
+    scene.add(line);
+
+    // Create some light
+    const hemisphere = new THREE.HemisphereLight(0xffffff, 0x000000);
+    scene.add(hemisphere);
+
     try {
-      let time = 0;
       // Animation loop
       const render = () => {
-        time += 0.05; // Increment time for animation
         timeout = setTimeout(render, 1000 / 60);
 
         // Move the mesh in and out along the z-axis
-        mesh.position.z = Math.sin(time) * 0.5; // Adjust the multiplier (0.5) to change the range of motion
+        //mesh.position.z = Math.sin(time) * 0.5; // Adjust the multiplier (0.5) to change the range of motion
+
+        mesh.rotateX(0.001);
+        mesh.rotateY(0.01);
+
+        wireframe.rotateX(0.001);
+        wireframe.rotateY(0.01);
 
         renderer.render(scene, camera);
         gl.endFrameEXP();
