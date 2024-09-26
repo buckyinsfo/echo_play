@@ -1,30 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import ThreeSceneMgr from './components/ThreeSceneMgr';
+import SceneManager from './components/SceneManager';
+import ThreeScene from './components/ThreeScene';
+import ThreeScene2 from './components/ThreeScene2';
 import FiberScene from './components/FiberScene';
+import FiberScene2 from './components/FiberScene'; // Assuming you have this
 
 const App = () => {
-  const [useThreeScene, setUseThreeScene] = useState(true);
+  const [useThreeScenes, setUseThreeScenes] = useState(true);
 
-  useEffect(() => {
-    console.log(
-      `Current scene: ${useThreeScene ? 'ThreeScene' : 'FiberScene'}`,
-    );
-  }, [useThreeScene]);
+  const threeScenes = [ThreeScene, ThreeScene2];
+  const threeSceneNames = ['ThreeScene 1', 'ThreeScene 2'];
 
-  const toggleScene = () => {
-    setUseThreeScene(prev => !prev);
+  const fiberScenes = [FiberScene, FiberScene2];
+  const fiberSceneNames = ['FiberScene 1', 'FiberScene 2'];
+
+  const toggleSceneType = () => {
+    setUseThreeScenes(prev => !prev);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.sceneContainer}>
-        {useThreeScene ? <ThreeSceneMgr /> : <FiberScene />}
+        {useThreeScenes ? (
+          <SceneManager scenes={threeScenes} sceneNames={threeSceneNames} />
+        ) : (
+          <SceneManager scenes={fiberScenes} sceneNames={fiberSceneNames} />
+        )}
       </View>
       <View style={styles.overlay}>
-        <TouchableOpacity style={styles.button} onPress={toggleScene}>
+        <TouchableOpacity style={styles.button} onPress={toggleSceneType}>
           <Text style={styles.buttonText}>
-            Switch to {useThreeScene ? 'Fiber' : 'Three'} Scene
+            Switch to {useThreeScenes ? 'Fiber' : 'Three'} Scenes
           </Text>
         </TouchableOpacity>
       </View>

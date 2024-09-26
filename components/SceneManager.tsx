@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import ThreeScene from './ThreeScene';
-import ThreeScene2 from './ThreeScene2';
 
-const ThreeSceneMgr = () => {
-  const [useThreeScene, setUseThreeScene] = useState(true);
+type SceneManagerProps = {
+  scenes: React.ComponentType[];
+  sceneNames: string[];
+};
+
+const SceneManager: React.FC<SceneManagerProps> = ({ scenes, sceneNames }) => {
+  const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
 
   useEffect(() => {
-    console.log(
-      `Current ThreeScene: ${useThreeScene ? 'ThreeScene' : 'ThreeScene2'}`,
-    );
-  }, [useThreeScene]);
+    console.log(`Current scene: ${sceneNames[currentSceneIndex]}`);
+  }, [currentSceneIndex, sceneNames]);
 
   const toggleScene = () => {
-    setUseThreeScene(prev => !prev);
+    setCurrentSceneIndex(prevIndex => (prevIndex + 1) % scenes.length);
   };
+
+  const CurrentScene = scenes[currentSceneIndex];
 
   return (
     <View style={styles.container}>
       <View style={styles.sceneContainer}>
-        {useThreeScene ? <ThreeScene /> : <ThreeScene2 />}
+        <CurrentScene />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={toggleScene}>
           <Text style={styles.buttonText}>
-            Switch to ThreeScene {useThreeScene ? '2' : '1'}
+            Switch to {sceneNames[(currentSceneIndex + 1) % scenes.length]}
           </Text>
         </TouchableOpacity>
       </View>
@@ -57,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ThreeSceneMgr;
+export default SceneManager;
