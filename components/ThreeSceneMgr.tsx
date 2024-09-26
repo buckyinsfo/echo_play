@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import ThreeSceneMgr from './components/ThreeSceneMgr';
-import FiberScene from './components/FiberScene';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import ThreeScene from './ThreeScene';
+import ThreeScene2 from './ThreeScene2';
 
-const App = () => {
+const ThreeSceneMgr = () => {
   const [useThreeScene, setUseThreeScene] = useState(true);
 
   useEffect(() => {
     console.log(
-      `Current scene: ${useThreeScene ? 'ThreeScene' : 'FiberScene'}`,
+      `Current ThreeScene: ${useThreeScene ? 'ThreeScene' : 'ThreeScene2'}`,
     );
   }, [useThreeScene]);
 
@@ -19,12 +19,12 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={styles.sceneContainer}>
-        {useThreeScene ? <ThreeSceneMgr /> : <FiberScene />}
+        {useThreeScene ? <ThreeScene /> : <ThreeScene2 />}
       </View>
-      <View style={styles.overlay}>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={toggleScene}>
           <Text style={styles.buttonText}>
-            Switch to {useThreeScene ? 'Fiber' : 'Three'} Scene
+            Switch to ThreeScene {useThreeScene ? '2' : '1'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -39,19 +39,17 @@ const styles = StyleSheet.create({
   sceneContainer: {
     flex: 1,
   },
-  overlay: {
+  buttonContainer: {
     position: 'absolute',
-    top: 40,
+    bottom: 20,
     left: 0,
     right: 0,
     alignItems: 'center',
-    zIndex: 2,
   },
   button: {
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 5,
-    marginVertical: 10,
   },
   buttonText: {
     color: 'blue',
@@ -59,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default ThreeSceneMgr;
